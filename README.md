@@ -1,6 +1,11 @@
 # Vaquill AI plugin marketplace
 
-Claude Code and Cowork plugins for [Vaquill AI](https://www.vaquill.ai), US primary law as agent tooling.
+Claude Code plugins for [Vaquill AI](https://www.vaquill.ai), US primary law as agent tooling.
+
+**Claude Code only for now.** The bundled MCP server authenticates with a `vq_key_` read from
+`VAQUILL_API_KEY`, and Cowork has no user-settable environment. Verified 2026-09-07: the template
+is sent literally there and every tool call 401s, while the connection still shows as healthy.
+Cowork support needs OAuth on the server, not a config change here.
 
 ```text
 /plugin marketplace add Vaquill-AI/vaquill-plugin

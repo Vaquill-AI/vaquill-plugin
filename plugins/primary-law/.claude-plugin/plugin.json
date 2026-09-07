@@ -1,6 +1,6 @@
 {
   "name": "primary-law",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Search and cite US primary law from official government sources. Resolves citations to exact sections, reconstructs a section as it read on a past date, and subscribes to law-change alerts.",
   "author": {
     "name": "Vaquill AI",

@@ -25,9 +25,25 @@ Two things to tell the user before they start:
 
 Check the credit balance in the console before a long session. There is no free tier published; do not promise the user free usage.
 
+## Cowork and other cloud sessions: not supported yet
+
+**Stop here if the user is in Cowork, or any Claude session running in an Anthropic cloud container rather than on their own machine.** Everything below is a terminal instruction with no cloud equivalent.
+
+Measured 2026-09-07 in a real Cowork session:
+
+- The plugin installs, and the skill and all ten commands load correctly.
+- The MCP server never connects, because `VAQUILL_API_KEY` is unset in the container and `${VAQUILL_API_KEY}` has nothing to expand to.
+- A cloud container never sees the user's own machine, so `~/.zshenv` is irrelevant there.
+
+This is not a gap in this plugin. `user_config`, the mechanism Anthropic designed for passing credentials to a bundled MCP server, does not reach the server process in Cowork either: [anthropics/claude-code#39125](https://github.com/anthropics/claude-code/issues/39125), labelled a bug and closed as `not planned`. The only workaround in that thread is per-session and lost when the ephemeral VM ends.
+
+So there is currently **no durable way for a cloud session to hold this credential**. Say that plainly rather than walking a Cowork user through the steps below, which will end in a 401 with no path forward. Cowork support needs OAuth on `mcp.vaquill.ai`, which is server work rather than a change to this plugin.
+
 ## Step 2: put the key in `~/.zshenv`, not `~/.zshrc`
 
-This is the step that goes wrong, so walk the user through it exactly. Verified end to end 2026-09-07; `${VAQUILL_API_KEY}` expansion in a plugin's `.mcp.json` headers **does** work once the variable actually reaches the process.
+This is the step that goes wrong, so walk the user through it exactly.
+
+**Claude Code only.** `${VAQUILL_API_KEY}` expansion reads the *process* environment, so it needs a shell you control. Verified 2026-09-07: it works end to end in Claude Code once the variable actually reaches the process, and it **cannot work in Cowork**, which has no user-settable environment and no shell. There the template is sent literally, the connection still reports healthy, and every tool call returns 401. If the user is in Cowork, say the plugin does not support it yet rather than walking them through anything below.
 
 ```bash
 echo 'export VAQUILL_API_KEY="vq_key_YOUR_KEY"' >> ~/.zshenv
