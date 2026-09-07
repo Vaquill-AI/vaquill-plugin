@@ -25,24 +25,59 @@ Two things to tell the user before they start:
 
 Check the credit balance in the console before a long session. There is no free tier published; do not promise the user free usage.
 
-## Step 2: set the environment variable
+## Step 2: put the key in `~/.zshenv`, not `~/.zshrc`
+
+This is the step that goes wrong, so walk the user through it exactly. Verified end to end 2026-09-07; `${VAQUILL_API_KEY}` expansion in a plugin's `.mcp.json` headers **does** work once the variable actually reaches the process.
 
 ```bash
-export VAQUILL_API_KEY="vq_key_..."
+echo 'export VAQUILL_API_KEY="vq_key_YOUR_KEY"' >> ~/.zshenv
+chmod 600 ~/.zshenv
 ```
 
-Put it in the shell profile rather than typing it per session, then restart Claude Code so the plugin's MCP server picks it up.
+**`~/.zshrc` is not enough.** It is sourced only for *interactive* shells. Claude Code and the processes it spawns are not always interactive, and `~/.zshenv` is sourced for every zsh invocation. On bash, the equivalent is `~/.bash_profile` plus `~/.bashrc`.
+
+A bare `export` typed into a terminal is also not enough. It dies with that shell.
+
+Verify it reaches a **new** shell, which is what actually matters:
+
+```bash
+zsh -c 'echo ${VAQUILL_API_KEY:+PRESENT}'    # must print PRESENT
+```
+
+Use the `:+` form. `${VAR:-...}` prints the key itself and will leak it into the transcript.
 
 Do not write the key into `.mcp.json`, into a committed `.env`, or into any file under version control.
 The variable indirection in `.mcp.json` exists precisely so the key never lands in the repo.
 Never print a full key back into the transcript.
 
-If the variable does not expand (this can happen when Claude Code is launched from the desktop app rather than a shell), the fallback is the path-token form of the server URL, `https://mcp.vaquill.ai/s/vq_key_...`. **Treat that URL as a secret**: it carries the credential in the path, so it must not be shared, logged or committed.
+## Step 3: fully quit and relaunch Claude Code
 
-## Step 3: confirm the connection
+Environment is inherited **once, at process start**. So none of these pick up a new variable:
 
-Run `/mcp` and check that `vaquill-us` is connected before running a research task.
-A server that failed to start looks identical to a corpus with no results, and the second reading wastes the user's time.
+- `/reload`
+- MCP servers reconnecting
+- Starting a new session in the same window
+- Reinstalling the plugin
+
+Quit Claude Code itself (`/exit`, or Ctrl+D), then run `claude` again from a shell that has the variable.
+
+Prove it took:
+
+```bash
+pgrep -f claude    # must be a DIFFERENT number than before
+```
+
+If the pid is unchanged, the variable is not there and every tool call will return 401 no matter what `/mcp` says.
+
+## Step 4: one live call, because a green connection proves nothing
+
+**A green connection does not mean the key works.** Measured 2026-09-07: the server completes the MCP handshake and lists all 25 tools with no `Authorization` header at all, with an unexpanded `${VAQUILL_API_KEY}` template, and with an invalid key. Authentication is enforced at the API call behind each tool, not at the protocol layer.
+
+So `claude mcp list` showing `Connected`, and a full tool list in `/mcp`, are both consistent with a completely broken credential. **The only real smoke test is one live call**, and the cheapest is free:
+
+> "Use Vaquill to list statutes coverage for California."
+
+`list_statutes_coverage` costs 0 credits. A 401 there means the key never reached the server; a normal response means setup is done.
 
 ## Attribution
 
