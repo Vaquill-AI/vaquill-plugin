@@ -1,0 +1,18 @@
+{
+  "name": "vaquill",
+  "description": "US primary law as agent tooling. Statutes, regulations, constitutions and court rules from official government sources.",
+  "owner": {
+    "name": "Vaquill AI",
+    "email": "contact@vaquill.ai"
+  },
+  "metadata": {
+    "pluginRoot": "./plugins"
+  },
+  "plugins": [
+    {
+      "name": "primary-law",
+      "source": "./plugins/primary-law",
+      "description": "Search and cite US primary law from official sources, resolve citations to exact sections, and subscribe to law-change alerts."
+    }
+  ]
+}

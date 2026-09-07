@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "vaquill-us": {
+      "type": "http",
+      "url": "https://mcp.vaquill.ai/s/_",
+      "headers": {
+        "Authorization": "Bearer ${VAQUILL_API_KEY}"
+      }
+    }
+  }
+}
