@@ -10,14 +10,15 @@ Search and cite statutes, regulations, constitutions and court rules from offici
 /plugin install primary-law@vaquill
 ```
 
-Then set your key and restart Claude Code:
+Then run `/mcp`, pick `vaquill-us`, and sign in. That is the whole setup: the server uses OAuth,
+so there is no key to create or paste and no shell restart.
 
-```bash
-export VAQUILL_API_KEY="vq_key_..."
-```
+Then make one live call, because a green connection proves nothing: the server lists all 25 tools
+with no credential at all. Ask for *"statutes coverage for California"*; `list_statutes_coverage`
+costs 0 credits.
 
-Get a key at [vaquill.ai/legal-api](https://www.vaquill.ai/legal-api).
-New accounts include 500 free credits ($5.00), enough for roughly 125 searches or 250 section lookups.
+New accounts include 500 free credits ($5.00), enough for roughly 125 searches or 250 section
+lookups. Pricing is at [vaquill.ai/legal-api](https://www.vaquill.ai/legal-api).
 
 ## What is in the box
 

@@ -2,10 +2,11 @@
 
 Claude Code plugins for [Vaquill AI](https://www.vaquill.ai), US primary law as agent tooling.
 
-**Claude Code only for now.** The bundled MCP server authenticates with a `vq_key_` read from
-`VAQUILL_API_KEY`, and Cowork has no user-settable environment. Verified 2026-09-07: the template
-is sent literally there and every tool call 401s, while the connection still shows as healthy.
-Cowork support needs OAuth on the server, not a config change here.
+**Works everywhere Claude runs, including Cowork.** The bundled MCP server authenticates with
+OAuth, so there is no key to set and nothing to read from the environment. Until 2026-09-08 it read
+a `vq_key_` from `VAQUILL_API_KEY`, which could not work in Cowork at all: that container has no
+user-settable environment, so the template was sent literally and every tool call 401d while the
+connection still showed as healthy.
 
 ```text
 /plugin marketplace add Vaquill-AI/vaquill-plugin
@@ -25,7 +26,7 @@ Cowork support needs OAuth on the server, not a config change here.
 plugins/primary-law/
   .claude-plugin/plugin.json         manifest
   .mcp.json                          the US MCP server
-  SETUP.md                           key setup, walked through on install
+  SETUP.md                           OAuth sign-in, walked through on install
   skills/                            research judgment the tool schemas cannot carry
   commands/                          user-invoked workflows
 ```
