@@ -12,7 +12,7 @@
     {
       "name": "primary-law",
       "source": "./plugins/primary-law",
-      "description": "Search and cite US primary law from official sources, resolve citations to exact sections, and subscribe to law-change alerts."
+      "description": "Search and cite US primary law from official sources and resolve citations to exact sections."
     }
   ]
 }
