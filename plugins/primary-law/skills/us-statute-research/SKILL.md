@@ -28,7 +28,7 @@ Call it rather than quoting a number from memory or from this file.
 
 Roughly 19 `corpusType` tokens. The live spec enum and the docs disagree on the exact set, so treat this as orientation and the coverage legend as truth.
 
-**Federal:** `USC`, `SESSION_LAW` (Statutes at Large, as enacted), `STATUTE_COMPILATION`, `CFR`, `CFR_ANNUAL`, `FEDERAL_REGISTER`, `FEDERAL_REGISTER_NOTICE`, `EXECUTIVE_ACTION`, `AGENCY_GUIDANCE`, `AGENCY_ADJUDICATION`, `US_TAX_TREATY`, `SENTENCING_GUIDELINES`, `FEDERAL_RULES`, `CONSTITUTION`.
+**Federal:** `USC`, `SESSION_LAW` (Statutes at Large, as enacted), `STATUTE_COMPILATION`, `CFR`, `CFR_ANNUAL`, `FEDERAL_REGISTER`, `FEDERAL_REGISTER_NOTICE`, `EXECUTIVE_ACTION`, `AGENCY_GUIDANCE`, `AGENCY_ADJUDICATION`, `US_TAX_TREATY` (IRS income tax treaties only), `US_TREATY` (the Senate treaty record), `SENTENCING_GUIDELINES`, `FEDERAL_RULES`, `CONSTITUTION`.
 
 **State:** `STATE`, `REGULATION`, `STATE_RULES`, `STATE_AGENCY_GUIDANCE`, `STATE_CONSTITUTION`.
 
